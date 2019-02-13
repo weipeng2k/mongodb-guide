@@ -1,13 +1,10 @@
 package com.murdock.books.mongodbguide;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.murdock.books.mongodbguide.config.MongoConfig;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class InsertTableTest {
         // author
         String[] jobs = new String[]{"developer", "teacher", "driver", "police", "officer"};
         Random random = new Random();
-        for (int i = 0; i< 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             DBObject dbObject = new BasicDBObject();
             dbObject.put("name", "liu" + i);
             dbObject.put("age", random.nextInt(40));
