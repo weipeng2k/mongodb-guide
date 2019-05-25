@@ -1,7 +1,7 @@
 package com.murdock.books.mongodbguide.taskinstance;
 
 import com.mongodb.WriteResult;
-import com.murdock.books.mongodbguide.config.MongoConfig;
+import com.murdock.books.mongodbguide.common.config.MongoConfig;
 import com.murdock.books.mongodbguide.constants.TaskInstanceConstants;
 import com.murdock.books.mongodbguide.domain.TaskInstance;
 import com.murdock.books.mongodbguide.domain.TaskInstanceRuleConfig;
@@ -20,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

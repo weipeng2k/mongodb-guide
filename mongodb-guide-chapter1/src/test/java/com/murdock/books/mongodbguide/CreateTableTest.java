@@ -3,7 +3,7 @@ package com.murdock.books.mongodbguide;
 import com.mongodb.CommandResult;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.murdock.books.mongodbguide.config.MongoConfig;
+import com.murdock.books.mongodbguide.common.config.MongoConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

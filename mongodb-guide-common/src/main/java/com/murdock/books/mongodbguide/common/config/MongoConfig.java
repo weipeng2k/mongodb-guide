@@ -1,4 +1,4 @@
-package com.murdock.books.mongodbguide.config;
+package com.murdock.books.mongodbguide.common.config;
 
 import com.mongodb.MongoClient;
 import org.springframework.beans.factory.annotation.Value;

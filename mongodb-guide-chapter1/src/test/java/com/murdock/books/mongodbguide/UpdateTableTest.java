@@ -4,7 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
-import com.murdock.books.mongodbguide.config.MongoConfig;
+import com.murdock.books.mongodbguide.common.config.MongoConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,26 +31,6 @@ public class UpdateTableTest {
 
     @Autowired
     private MongoTemplate mongoTemplate;
-
-    @Test
-    public void update_collection() {
-        if (!mongoTemplate.collectionExists("mongo_test_collection")) {
-            mongoTemplate.createCollection("mongo_test_collection");
-        }
-        DBCollection mongoTestCollection = mongoTemplate.getCollection("mongo_test_collection");
-
-        DBObject findOne = mongoTestCollection.findOne();
-        System.out.println(findOne);
-
-        DBObject query = new BasicDBObject();
-        query.put("name", "weipeng");
-
-        DBObject update = new BasicDBObject();
-        update.put("job", "teacher");
-        WriteResult result = mongoTestCollection.update(query, update);
-
-        Assert.assertTrue(result.getN() > 0);
-    }
 
     @Test
     public void update_updater_inc() {

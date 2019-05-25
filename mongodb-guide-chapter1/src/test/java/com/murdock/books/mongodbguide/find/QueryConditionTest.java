@@ -1,6 +1,6 @@
 package com.murdock.books.mongodbguide.find;
 
-import com.murdock.books.mongodbguide.config.MongoConfig;
+import com.murdock.books.mongodbguide.common.config.MongoConfig;
 import com.murdock.books.mongodbguide.domain.People;
 import org.junit.Test;
 import org.junit.runner.RunWith;

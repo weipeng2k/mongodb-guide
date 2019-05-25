@@ -1,11 +1,12 @@
 package com.murdock.books.mongodbguide.taskinstance;
 
-import com.murdock.books.mongodbguide.config.MongoConfig;
+import com.murdock.books.mongodbguide.common.config.MongoConfig;
 import com.murdock.books.mongodbguide.constants.TaskInstanceConstants;
 import com.murdock.books.mongodbguide.domain.Author;
 import com.murdock.books.mongodbguide.domain.TaskInstance;
 import com.murdock.books.mongodbguide.domain.TaskInstanceRuleConfig;
 import com.murdock.books.mongodbguide.domain.Wrapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +130,7 @@ public class InsertTaskInstanceTest {
     }
 
     @Test
+    @Ignore
     public void insert_collection() {
         LongStream.range(1_300_00, 1_500_00)
                 .parallel()

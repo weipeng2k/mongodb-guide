@@ -1,6 +1,6 @@
 package com.murdock.books.mongodbguide;
 
-import com.murdock.books.mongodbguide.config.MongoConfig;
+import com.murdock.books.mongodbguide.common.config.MongoConfig;
 import com.murdock.books.mongodbguide.domain.Author;
 import com.murdock.books.mongodbguide.domain.Blog;
 import com.murdock.books.mongodbguide.domain.Comment;

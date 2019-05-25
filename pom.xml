@@ -17,6 +17,8 @@
 
     <modules>
         <module>mongodb-guide-chapter1</module>
+        <module>mongodb-guide-chapter2</module>
+        <module>mongodb-guide-common</module>
     </modules>
 
     <dependencyManagement>
@@ -32,6 +34,13 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- self -->
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>mongodb-guide-common</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

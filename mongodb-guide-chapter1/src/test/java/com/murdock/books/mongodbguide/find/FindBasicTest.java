@@ -3,7 +3,7 @@ package com.murdock.books.mongodbguide.find;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.murdock.books.mongodbguide.config.MongoConfig;
+import com.murdock.books.mongodbguide.common.config.MongoConfig;
 import com.murdock.books.mongodbguide.domain.People;
 import org.bson.BsonDocument;
 import org.bson.BsonInt32;
