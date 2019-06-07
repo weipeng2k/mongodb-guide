@@ -17,3 +17,55 @@
 > 在安装了Docker的机器上，运行`sudo docker run --name mongo-test -d -p 27017:27017 mongo:3.6.9`，会拉起一个MongoDB（版本是3.6.9），同时端口是27017。
 
 &nbsp;&nbsp;&nbsp;&nbsp;保留的数据库是： **admin**，**local**和**config**。
+
+## 运行MongoDB Shell
+
+&nbsp;&nbsp;&nbsp;&nbsp;MongoDB自带了一个Javascript Shell，可以使用命令行的方式和MongoDB进行交互，可以使用它进行管理操作，检查状态等。
+
+> 可以使用`sudo docker exec -it mongo-test mongo`，其中`mongo-test`是MongoDB对应的docker实例名称。
+
+```shell
+weipeng2k@weipeng2k-workstation:~$ sudo docker exec -it mongo-test mongo
+MongoDB shell version v3.6.9
+connecting to: mongodb://127.0.0.1:27017
+Implicit session: session { "id" : UUID("af9c08c0-3bec-4677-b0df-86bb37b0a7c7") }
+MongoDB server version: 3.6.9
+> 
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;可以在mongodb shell中执行javascript程序，例如：
+
+```shell
+> x=200
+200
+> print(x)
+200
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;可以使用`use $db`命令来进行数据库切换，比如：切换到`test`数据库。
+
+```shell
+> use test
+switched to db test
+> db
+test
+```
+
+> 可以使用`show dbs`或者在一个数据库中使用`show collections`来查看当前MongoDB实例部署的数据库，以及当前数据库中的集合。这些命令和mysql很相似。
+
+### 创建数据
+
+```shell
+> author = {"_class" : "com.murdock.books.mongodbguide.domain.Author", "name" : "Author-1111111", "age" : 21}
+{
+	"_class" : "com.murdock.books.mongodbguide.domain.Author",
+	"name" : "Author-1111111",
+	"age" : 21
+}
+> db.author_test_collection.insert(author)
+WriteResult({ "nInserted" : 1 })
+> db.author_test_collection.find({"name":"Author-1111111"})
+{ "_id" : ObjectId("5cfa7edbb263c5548e111e25"), "_class" : "com.murdock.books.mongodbguide.domain.Author", "name" : "Author-1111111", "age" : 21 }
+> 
+```
+
