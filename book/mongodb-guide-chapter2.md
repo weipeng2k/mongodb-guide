@@ -55,6 +55,8 @@ test
 
 ### 创建数据
 
+&nbsp;&nbsp;&nbsp;&nbsp;可以在MongoDB Shell中进行数据的定义，然后通过执行`db.$collection_name.insert($variable)`来进行数据的插入，通过执行这个命令，以将一个文档插入到集合中。
+
 ```shell
 > author = {"_class" : "com.murdock.books.mongodbguide.domain.Author", "name" : "Author-1111111", "age" : 21}
 {
@@ -69,3 +71,122 @@ WriteResult({ "nInserted" : 1 })
 > 
 ```
 
+### 获取数据
+
+&nbsp;&nbsp;&nbsp;&nbsp;创建数据后，可以使用`db.$collection_name.find($query_expression)`来获取数据。除了使用对应的表达式进行查询（在后续的内容中进行详细介绍），还可以使用比较简单的方式进行获取，比如：使用`db.$collection_name.findOne()`，该查询会返回一个集合中的文档。
+
+```shell
+> db
+test
+> db.author_test_collection.findOne()
+{
+	"_id" : ObjectId("5c6533707ed82520f5504bcb"),
+	"_class" : "com.murdock.books.mongodbguide.domain.Author",
+	"name" : "Author-0",
+	"age" : 26
+}
+```
+
+> 可以使用`db`命令来查询当前会话是使用的哪个数据库。
+
+### 更新数据
+
+&nbsp;&nbsp;&nbsp;&nbsp;通过使用一个给定的查询方式和目标文档，可以将集合中的文档进行更新。
+
+```shell
+> db.author_test_collection.findOne()
+{
+	"_id" : ObjectId("5c6533707ed82520f5504bcb"),
+	"_class" : "com.murdock.books.mongodbguide.domain.Author",
+	"name" : "Author-0",
+	"age" : 26
+}
+> updateAuthor = {  "_class" : "com.murdock.books.mongodbguide.domain.Author", "name" : "Author-0", "age" : 27 }
+{
+	"_class" : "com.murdock.books.mongodbguide.domain.Author",
+	"name" : "Author-0",
+	"age" : 27
+}
+> db.author_test_collection.update({"name":"Author-0"}, updateAuthor)
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.author_test_collection.findOne()
+{
+	"_id" : ObjectId("5c6533707ed82520f5504bcb"),
+	"_class" : "com.murdock.books.mongodbguide.domain.Author",
+	"name" : "Author-0",
+	"age" : 27
+}
+
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;通过上面的命令可以看出，对于 *Author-0* 这个名称的文档，通过`update`操作，将其 **age** 属性进行了更新。当然，除了更新文档中已经存在的内容，也可以增加一些属性。
+
+```shell
+> updateAuthor = {  "_class" : "com.murdock.books.mongodbguide.domain.Author", "name" : "Author-0", "age" : 27, "sex":"male" }
+{
+	"_class" : "com.murdock.books.mongodbguide.domain.Author",
+	"name" : "Author-0",
+	"age" : 27,
+	"sex" : "male"
+}
+> db.author_test_collection.update({"name":"Author-0"}, updateAuthor)
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.author_test_collection.findOne()
+{
+	"_id" : ObjectId("5c6533707ed82520f5504bcb"),
+	"_class" : "com.murdock.books.mongodbguide.domain.Author",
+	"name" : "Author-0",
+	"age" : 27,
+	"sex" : "male"
+}
+
+```
+
+### 删除数据
+
+&nbsp;&nbsp;&nbsp;&nbsp;如果想删除文档，自然就可以使用`db.$collection_name.remove($query_expression)`。对于符合查询条件的文档，将会从集合中删除。
+
+```sh
+> db.author_test_collection.remove({"sex":"male"})
+WriteResult({ "nRemoved" : 1 })
+> db.author_test_collection.find({"name":"Author-0"})
+```
+
+> 可以看到只要符合文档中有属性 **sex** 为 `male`的，都会被删除。
+
+## 数据类型
+
+&nbsp;&nbsp;&nbsp;&nbsp;MongoDB的文档类似于JSON，虽然JSON的数据表现能力很强，但是还是无法满足一些特定要求，比如：时间类型。所以MongoDB针对这种场景做了一些扩展。
+
+|类型|描述|
+|-----|----|
+|null|空值|
+|布尔|true或者false|
+|整数|分为32位和64位|
+|浮点数|64位双精度浮点数|
+|字符串|字符数组，类似："string"|
+|对象ID|在一个集合中唯一定位一个文档，ObjectId()|
+|日期|Date|
+|数组|值的集合或者列表，类似：["A", "B", "C"]|
+|内嵌文档|文档是一级KV，如果在V中包含了KV，那么就是内嵌文档|
+
+> 以上是主要的数据类型。
+
+### 时间类型
+
+&nbsp;&nbsp;&nbsp;&nbsp;日期类型存储的是从标准纪元开始的时间，如果换算到中国时区，需要+8。
+
+```sh
+> v = {"x": new Date()}
+{ "x" : ISODate("2019-06-08T12:29:21.063Z") }
+```
+
+### 内嵌文档
+
+&nbsp;&nbsp;&nbsp;&nbsp;相当于在MongoDB中的一个文档被嵌入到了另一个文档中，这种组合形式就不会让文档拘泥于扁平形式。而MongoDB支持在内嵌文档上进行索引建立，虽然数据可能有重复，但是形式表达会更加自然。
+
+### 对象ID
+
+&nbsp;&nbsp;&nbsp;&nbsp;在MongoDB的任何文档中，都会有一个属性`_id`，它所存储的是这个集合中的唯一标识。
+
+&nbsp;&nbsp;&nbsp;&nbsp;默认情况下MongoDB的客户端会自动生成一个对象ID，它通过使用当前机器名、进程等标识信息生成了一个12byte的对象ID。类似Mysql的id autoincreament一样，能够生成不同的数据主键，但是MongoDB把这个工作放在了客户端，这样就减轻了服务端的压力。
