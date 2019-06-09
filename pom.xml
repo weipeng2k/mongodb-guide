@@ -19,6 +19,7 @@
         <module>mongodb-guide-chapter1</module>
         <module>mongodb-guide-chapter2</module>
         <module>mongodb-guide-common</module>
+        <module>mongodb-guide-chapter3</module>
     </modules>
 
     <dependencyManagement>
