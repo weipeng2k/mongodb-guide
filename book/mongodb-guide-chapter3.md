@@ -168,3 +168,87 @@ System.out.println("count:" + mongoTemplate.getCollection("foo").count());
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;可以看到通过`DBObject`可以构造出`remove`方法需要的参数，其中`$gte`是一个操作，代表大于等于一个值。
+
+## 更新文档
+
+&nbsp;&nbsp;&nbsp;&nbsp;通过使用`update`命令，可以完成对集合中文档的修改动作。
+
+```sh
+> db.foo.find()
+{ "_id" : ObjectId("5d0dfb1becfa8c49ce3fb2b5"), "name" : "test", "age" : 18 }
+> var f = {"name" : "test", "age" : 18}
+> f
+{ "name" : "test", "age" : 18 }
+> f.level = "high"
+high
+> f
+{ "name" : "test", "age" : 18, "level" : "high" }
+> db.foo.update({"name":"test"}, f)
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.foo.find()
+{ "_id" : ObjectId("5d0dfb1becfa8c49ce3fb2b5"), "name" : "test", "age" : 18, "level" : "high" }
+```
+
+> 对于Java端的操作可以参考：`com.murdock.books.mongodbguide.chapter3.UpdateTest`
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行更新文档的关键逻辑如下：
+
+```java
+DBObject dbObject = new BasicDBObject();
+dbObject.put("name", "test");
+dbObject.put("level", "high");
+dbObject.put("age", 20);
+
+DBObject query = new BasicDBObject();
+query.put("name", "test");
+
+WriteResult result = mongoTemplate.getCollection("foo").update(query, dbObject);
+System.out.println(result.getN() >= 1);
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp; 以上的修改方式，属于覆盖式修改，但是我们对于文档的修改，往往是集中在某个属性。针对部分属性的修改，可以使用以下方式。
+
+### $INC
+
+&nbsp;&nbsp;&nbsp;&nbsp;针对文档中的数字类型，可以使用增加`inc`进行操作，将一个文档中的数字属性进行增加或者减少（负数）。
+
+```sh
+> db.foo.findOne()
+{
+	"_id" : ObjectId("5d0e0dceecfa8c49ce3fb2b7"),
+	"name" : "test",
+	"age" : 18,
+	"level" : "high"
+}
+> db.foo.update({"name":"test"} , {"$inc":{"age":1}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.foo.update({"name":"test"} , {"$inc":{"age":1}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.foo.findOne()
+{
+	"_id" : ObjectId("5d0e0dceecfa8c49ce3fb2b7"),
+	"name" : "test",
+	"age" : 20,
+	"level" : "high"
+}
+
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;可以看到使用`$inc`，将`age`从18变为20。
+
+> 对于Java端的操作可以参考：`com.murdock.books.mongodbguide.chapter3.UpdateTest`
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行更新文档的关键逻辑如下：
+
+```java
+DBObject update = new BasicDBObject();
+DBObject prop = new BasicDBObject();
+prop.put("age", 1);
+update.put("$inc", prop);
+
+mongoTemplate.getCollection("foo").update(query, update);
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用`$inc`进行更新，能够保证当前文档对应的属性更新是原子化的。
+
+### $SET
