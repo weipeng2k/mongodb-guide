@@ -252,3 +252,144 @@ mongoTemplate.getCollection("foo").update(query, update);
 &nbsp;&nbsp;&nbsp;&nbsp;使用`$inc`进行更新，能够保证当前文档对应的属性更新是原子化的。
 
 ### $SET
+
+&nbsp;&nbsp;&nbsp;&nbsp;由于默认的Update是全部覆盖，当需要为指定的文档添加一个字段，就需要使用`set`进行操作。
+
+```sh
+> db.foo.findOne()
+{
+	"_id" : ObjectId("5d6bb09124b8e520faedc0aa"),
+	"name" : "test",
+	"age" : 18,
+	"sex" : "male"
+}
+> db.foo.update({"name":"test"}, {"$set":{"sex":"female"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.foo.findOne()
+{
+	"_id" : ObjectId("5d6bb09124b8e520faedc0aa"),
+	"name" : "test",
+	"age" : 18,
+	"sex" : "female"
+}
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;可以看到使用`$set`，将`sex`属性从male改为了female。
+
+> 对于Java端的操作可以参考：`com.murdock.books.mongodbguide.chapter3.UpdateTest`
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行更新文档的关键逻辑如下：
+
+```java
+DBObject update = new BasicDBObject();
+DBObject prop = new BasicDBObject();
+
+prop.put("sex", "male");
+update.put("$set", prop);
+mongoTemplate.getCollection("foo").update(query, update);
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用`$set`进行更新，当文档没有对应的key时会添加，有的话，则修改。
+
+### $PUSH 
+
+&nbsp;&nbsp;&nbsp;&nbsp;MongoDB支持的数据类型除了这种KV之外，还有数组。如果对于一个文档中的数组属性进行操作时，可以使用`push`进行操作。
+
+> 该操作只能针对数组属性
+
+```sh
+> db.foo.update({"name":"test"}, {"$push":{"hobbies":"reading"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.foo.findOne()
+{
+	"_id" : ObjectId("5d6bb09124b8e520faedc0aa"),
+	"name" : "test",
+	"age" : 18,
+	"sex" : "female",
+	"hobbies" : [
+		"reading"
+	]
+}
+> db.foo.update({"name":"test"}, {"$push":{"hobbies":"tvgaming"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.foo.findOne()
+{
+	"_id" : ObjectId("5d6bb09124b8e520faedc0aa"),
+	"name" : "test",
+	"age" : 18,
+	"sex" : "female",
+	"hobbies" : [
+		"reading",
+		"tvgaming"
+	]
+}
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;可以看到通过使用`push`将一个元素添加到对应的数组的尾部。
+
+> 对于Java端的操作可以参考：`com.murdock.books.mongodbguide.chapter3.ArrayUpdateTest`
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行更新文档的关键逻辑如下：
+
+```java
+DBObject update = new BasicDBObject();
+DBObject prop = new BasicDBObject();
+
+prop.put("hobbies", "reading");
+update.put("$push", prop);
+mongoTemplate.getCollection("foo").update(query, update);
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用`$push`进行数组元素的更新，当文档没有对应的数组key时会添加，并将元素添加到数组的尾部。
+
+### $ADDTOSET
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用`push`命令可以向一个文档中的数组属性里添加内容，但是如果该内容已经在数组中出现，而本次添加是当元素在数组中不存在时才生效时，就需要使用`addToSet`。
+
+```sh
+> db.foo.update({"name":"test"}, {"$addToSet":{"hobbies":"football"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.foo.findOne()
+{
+	"_id" : ObjectId("5d6bc02d24b8e52357933ed0"),
+	"name" : "test",
+	"age" : 18,
+	"hobbies" : [
+		"reading",
+		"tvgaming",
+		"football"
+	]
+}
+> db.foo.update({"name":"test"}, {"$addToSet":{"hobbies":"football"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 0 })
+> db.foo.findOne()
+{
+	"_id" : ObjectId("5d6bc02d24b8e52357933ed0"),
+	"name" : "test",
+	"age" : 18,
+	"hobbies" : [
+		"reading",
+		"tvgaming",
+		"football"
+	]
+}
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;可以看到通过使用`addToSet`将一个元素以集合Set的视角添加入一个数组，当数组中存在该元素的时候，不会添加。
+
+> 对于Java端的操作可以参考：`com.murdock.books.mongodbguide.chapter3.ArrayUpdateTest`
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行更新文档的关键逻辑如下：
+
+```java
+DBObject update = new BasicDBObject();
+DBObject prop = new BasicDBObject();
+
+prop.put("hobbies", "reading");
+update.put("$addToSet", prop);
+mongoTemplate.getCollection("foo").update(query, update);
+```
+
+### $POP
+
+&nbsp;&nbsp;&nbsp;&nbsp;

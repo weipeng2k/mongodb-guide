@@ -5,6 +5,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.murdock.books.mongodbguide.common.config.MongoConfig;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,14 +44,15 @@ public class UpdateTest {
         mongoTemplate.getCollection("foo").insert(dbObject);
 
         DBObject query = new BasicDBObject();
-        query.put("name", "test");
 
         DBCursor dbCursor = mongoTemplate.getCollection("foo").find(query);
         dbCursor.forEachRemaining(System.out::println);
 
+        dbObject = new BasicDBObject();
         dbObject.put("level", "high");
         dbObject.put("age", 20);
 
+        // 完全更新，覆盖
         WriteResult result = mongoTemplate.getCollection("foo").update(query, dbObject);
         System.out.println(result.getN() >= 1);
 
@@ -88,6 +90,64 @@ public class UpdateTest {
         System.out.println(mongoTemplate.getCollection("foo").findOne());
     }
 
+    @Test
+    public void set() {
+        // insert
+        DBObject dbObject = new BasicDBObject();
+        dbObject.put("name", "test");
+        dbObject.put("age", 18);
+
+        mongoTemplate.getCollection("foo").insert(dbObject);
+
+        System.out.println("Insert:" + mongoTemplate.getCollection("foo").findOne());
+
+        DBObject query = new BasicDBObject();
+        query.put("name", "test");
+
+        DBObject update = new BasicDBObject();
+        DBObject prop = new BasicDBObject();
+
+        prop.put("sex", "male");
+        update.put("$set", prop);
+        //language=mongodb
+        //foo.update({"name":"test"}, {"$set":{"sex":"test"}})
+        WriteResult foo = mongoTemplate.getCollection("foo").update(query, update);
+        Assert.assertTrue(foo.getN() > 0);
+
+        System.out.println("foo.update({\"name\":\"test\"}, {\"$set\":{\"sex\":\"test\"}})");
+        System.out.println(mongoTemplate.getCollection("foo").findOne());
+    }
+
+    @Test
+    public void push() {
+        // insert
+        DBObject dbObject = new BasicDBObject();
+        dbObject.put("name", "test");
+        dbObject.put("age", 18);
+
+        mongoTemplate.getCollection("foo").insert(dbObject);
+
+        System.out.println("Insert:" + mongoTemplate.getCollection("foo").findOne());
+
+        DBObject query = new BasicDBObject();
+        query.put("name", "test");
+
+        DBObject update = new BasicDBObject();
+        DBObject prop = new BasicDBObject();
+
+        prop.put("hobbies", "reading");
+        update.put("$push", prop);
+        WriteResult foo = mongoTemplate.getCollection("foo").update(query, update);
+        Assert.assertTrue(foo.getN() > 0);
+        System.out.println(mongoTemplate.getCollection("foo").findOne());
+
+        System.out.println("======================");
+
+        prop.put("hobbies", "tvgaming");
+        foo = mongoTemplate.getCollection("foo").update(query, update);
+        Assert.assertTrue(foo.getN() > 0);
+        System.out.println(mongoTemplate.getCollection("foo").findOne());
+    }
 
     @Configuration
     @Import(MongoConfig.class)
