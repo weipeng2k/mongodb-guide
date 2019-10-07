@@ -1,7 +1,6 @@
 package com.murdock.books.mongodbguide.chapter3;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.murdock.books.mongodbguide.common.config.MongoConfig;
@@ -64,6 +63,77 @@ public class ArrayUpdateTest {
         Assert.assertTrue(foo.getN() > 0);
         System.out.println(mongoTemplate.getCollection("foo").findOne());
     }
+
+    @Test
+    public void pop() {
+        // insert
+        DBObject dbObject = new BasicDBObject();
+        dbObject.put("name", "test");
+        dbObject.put("age", 18);
+
+        mongoTemplate.getCollection("foo").insert(dbObject);
+
+        System.out.println("Insert:" + mongoTemplate.getCollection("foo").findOne());
+
+        DBObject query = new BasicDBObject();
+        query.put("name", "test");
+
+        DBObject update = new BasicDBObject();
+        DBObject prop = new BasicDBObject();
+
+        prop.put("hobbies", "reading");
+        update.put("$push", prop);
+        mongoTemplate.getCollection("foo").update(query, update);
+        prop.put("hobbies", "tv");
+        mongoTemplate.getCollection("foo").update(query, update);
+        prop.put("hobbies", "basketball");
+        mongoTemplate.getCollection("foo").update(query, update);
+
+        System.out.println("Current:" + mongoTemplate.getCollection("foo").findOne());
+
+        DBObject pop = new BasicDBObject();
+        DBObject popKey = new BasicDBObject();
+        popKey.put("hobbies", -1);
+        pop.put("$pop", popKey);
+        mongoTemplate.getCollection("foo").update(query, pop);
+        System.out.println("After Pop:" + mongoTemplate.getCollection("foo").findOne());
+    }
+
+    @Test
+    public void pull() {
+        // insert
+        DBObject dbObject = new BasicDBObject();
+        dbObject.put("name", "test");
+        dbObject.put("age", 18);
+
+        mongoTemplate.getCollection("foo").insert(dbObject);
+
+        System.out.println("Insert:" + mongoTemplate.getCollection("foo").findOne());
+
+        DBObject query = new BasicDBObject();
+        query.put("name", "test");
+
+        DBObject update = new BasicDBObject();
+        DBObject prop = new BasicDBObject();
+
+        prop.put("hobbies", "reading");
+        update.put("$push", prop);
+        mongoTemplate.getCollection("foo").update(query, update);
+        prop.put("hobbies", "tv");
+        mongoTemplate.getCollection("foo").update(query, update);
+        prop.put("hobbies", "basketball");
+        mongoTemplate.getCollection("foo").update(query, update);
+
+        System.out.println("Current:" + mongoTemplate.getCollection("foo").findOne());
+
+        DBObject pull = new BasicDBObject();
+        DBObject pullKey = new BasicDBObject();
+        pullKey.put("hobbies", "tv");
+        pull.put("$pull", pullKey);
+        mongoTemplate.getCollection("foo").update(query, pull);
+        System.out.println("After Pop:" + mongoTemplate.getCollection("foo").findOne());
+    }
+
 
     @Configuration
     @Import(MongoConfig.class)
