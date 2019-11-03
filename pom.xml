@@ -12,7 +12,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-boot.version>1.5.18.RELEASE</spring-boot.version>
-        <fastjson.version>1.2.54</fastjson.version>
+        <fastjson.version>1.2.60</fastjson.version>
     </properties>
 
     <modules>
@@ -20,6 +20,7 @@
         <module>mongodb-guide-chapter2</module>
         <module>mongodb-guide-common</module>
         <module>mongodb-guide-chapter3</module>
+        <module>mongodb-guide-chapter4</module>
     </modules>
 
     <dependencyManagement>
