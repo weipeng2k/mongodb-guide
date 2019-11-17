@@ -19,7 +19,29 @@
 
 > 默认会返回属性`_id`，如果不需要可以声明`{"_id": 0}`
 
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;`find`是和MongoDB交互的基础命令，可以通过它来查询集合中的文档（数据）。
+
+> 对于java端的操作可以参考：`com.murdock.books.mongodbguide.chapter4.FindTest`
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行查询文档的关键逻辑如下：
+
+```java
+DBObject query = new BasicDBObject();
+query.put("age", 20);
+DBObject project = new BasicDBObject();
+project.put("name", 1);
+project.put("_id", 0);
+DBCursor dbObjects = collection.find(query, project);
+
+dbObjects.forEach(System.out::println);
+
+dbObjects = collection.find(query);
+dbObjects.forEach(System.out::println);
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;`Collection.find()`方法的文档描述是：`Select documents in collection and get a cursor to the selected documents.`，可以看到调用`find`方法，返回的是指向符合查询条件要求的文档游标。只要我们获取了游标，我们就可以遍历它，访问符合我们要求的文档了。
+
+> 这里和JDBC有些区别，传统的JDBC通过`Collection`和`Statement`访问RDBMS后，得到的是数据集`RowSet`
 
 ## 根据条件查询
 
