@@ -45,6 +45,56 @@ dbObjects.forEach(System.out::println);
 
 ## 根据条件查询
 
+&nbsp;&nbsp;&nbsp;&nbsp;通过使用`find`命令，可以查询集合中符合要求的文档，但是我们对于数据库的使用不是只限定在这种简单的操作，还有一些比较通用的查询要求，比如：范围查询等。
+
+### 条件查询
+
+&nbsp;&nbsp;&nbsp;&nbsp;在SQL查询中，可以使用`>`或者`<`来进行范围的控制，也就是比较操作符。在MongoDB中，由于查询的语句都是JSON，所以需要用转移字符来替换掉我们常用的比较操作符。
+
+&nbsp;&nbsp;&nbsp;&nbsp;对应关系如下表：
+
+|类型|描述|
+|---|---|
+|`$lt`|less than，也就是 <|
+|`$lte`|less than or equal，也就是 <=|
+|`$gt`|greater than，也就是 >|
+|`$gte`|greater than or equal，也就是 >=|
+|`$ne`|not equal, 也就是 <>|
+
+&nbsp;&nbsp;&nbsp;&nbsp;根据`age`进行范围查询，先查询`age`小于等于`21`的。
+
+```sh
+> db.foo.find();
+{ "_id" : ObjectId("5d9ab1e940eabd2b62ced66f"), "name" : "test", "age" : 20 }
+{ "_id" : ObjectId("5dda6f29f75cb1b4beb2d95f"), "name" : "x", "age" : 21 }
+> db.foo.find({"age": {"$lte" : 20}})
+{ "_id" : ObjectId("5d9ab1e940eabd2b62ced66f"), "name" : "test", "age" : 20 }
+> db.foo.find({"age": {"$gt" : 20}})
+{ "_id" : ObjectId("5dda6f29f75cb1b4beb2d95f"), "name" : "x", "age" : 21 }
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;可以看到查询语句中，先给出了限定的文档字段`age`，随后跟着对字段的限定内容。
+
+> 对于java端的操作可以参考：`com.murdock.books.mongodbguide.chapter4.ConditionFindTest`
+
+&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行查询文档的关键逻辑如下：
+
+```java
+DBObject query = new BasicDBObject();
+
+DBObject condition = new BasicDBObject();
+condition.put("$gt", 20);
+
+query.put("age", condition);
+
+DBCursor dbObjects = collection.find(query);
+```
+
+### $OR
+
+&nbsp;&nbsp;&nbsp;&nbsp;在关系数据库中，可以通过`or`来限定查询条件，MongoDB也提供了类似的解决方案，也就是使用`$or`操作符。
+
+
 ## 高级查询
 
 ## 游标
