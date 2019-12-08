@@ -43,6 +43,23 @@ public class ArrayFindTest {
         dbObjects.forEach(System.out::println);
     }
 
+    @Test
+    public void size() {
+        DBCollection collection = mongoTemplate.getCollection("foo");
+
+        DBObject query = new BasicDBObject();
+
+        DBObject condition = new BasicDBObject();
+        condition.put("$size", 3);
+
+        query.put("value", condition);
+
+        System.out.println(query);
+
+        DBCursor dbObjects = collection.find(query);
+        dbObjects.forEach(System.out::println);
+    }
+
     @Configuration
     @Import(MongoConfig.class)
     static class Config {

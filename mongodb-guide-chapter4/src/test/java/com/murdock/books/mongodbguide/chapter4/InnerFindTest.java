@@ -27,15 +27,15 @@ public class InnerFindTest {
     private MongoTemplate mongoTemplate;
 
     @Test
-    public void all() {
+    public void inner_doc_property() {
         DBCollection collection = mongoTemplate.getCollection("foo");
 
         DBObject query = new BasicDBObject();
 
         DBObject condition = new BasicDBObject();
-        condition.put("$all", new int[]{1, 2});
+        condition.put("$gte", 80);
 
-        query.put("value", condition);
+        query.put("map.math", condition);
 
         System.out.println(query);
 
@@ -44,21 +44,30 @@ public class InnerFindTest {
     }
 
     @Test
-    public void size() {
+    public void inner_doc_elem_match() {
         DBCollection collection = mongoTemplate.getCollection("foo");
 
         DBObject query = new BasicDBObject();
 
         DBObject condition = new BasicDBObject();
-        condition.put("$size", 3);
+        condition.put("$gte", 90);
 
-        query.put("value", condition);
+        query.put("math", condition);
 
-        System.out.println(query);
+        DBObject elementMath = new BasicDBObject();
 
-        DBCursor dbObjects = collection.find(query);
+        elementMath.put("$elemMatch", query);
+
+        DBObject arrayQuery = new BasicDBObject();
+
+        arrayQuery.put("maps", elementMath);
+
+        System.out.println(arrayQuery);
+
+        DBCursor dbObjects = collection.find(arrayQuery);
         dbObjects.forEach(System.out::println);
     }
+
 
     @Configuration
     @Import(MongoConfig.class)
