@@ -388,3 +388,105 @@ DBCursor dbObjects = collection.find(arrayQuery);
 > 查询过程应该从最里层开始思考，逐步外推到父文档的属性。
 
 ## 游标
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在使用`find`命令进行查询时，MongoDB并不会将结果直接返回给客户端，而是返回了一个游标，你可以认为是一个指针，指向远端的数据。可以通过遍历的方式获取数据，或者执行一些诸如：排序的操作。
+
+```java
+DBObject query = new BasicDBObject();
+query.put("age", 20);
+DBObject project = new BasicDBObject();
+project.put("name", 1);
+project.put("_id", 0);
+DBCursor dbObjects = collection.find(query, project);
+
+dbObjects.forEach(System.out::println);
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上述代码查询集合后，返回的就是游标，而这个`DBCursor`的定义如下：
+
+```java
+@NotThreadSafe
+public class DBCursor implements Cursor, Iterable<DBObject> {
+}
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看到其实现了`Iterable`接口，能够支持for循环遍历，而对于真实数据的获取是在需要真正获取结果时才会去请求远端的文档数据。当客户端使用`Iterator#next()`方法获取数据时，客户端会批量的获取一部分数据或者4MB以内的数据（二者取其小者），这样客户端在调用`next()`方法时，就不会总去服务端上请求数据了。
+
+> 这种获取方式优化了客户端获取数据时的时延，并且降低了网络开销对于查询带来的影响
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;游标不仅仅是客户端的概念，在服务端也有会有游标。当客户端开始对服务端发起查询请求时，服务端也会生成对应的游标，这样客户端和服务端就能够对齐，这好比是一个会话，因此游标不是线程安全的。当然，在服务端的游标也会占用一定资源，当客户端完成遍历或者操作后，就会发起销毁请求给服务端，服务端会销毁对应的游标（会话）。
+
+### `limit`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在查询返回的数据上，限定返回的结果数量。比如：下面的查询，返回数据的结果被限定为2个。
+
+```sh
+> db.foo.find().limit(2)
+{ "_id" : ObjectId("5d9ab1e940eabd2b62ced66f"), "name" : "test", "age" : 20 }
+{ "_id" : ObjectId("5dda6f29f75cb1b4beb2d95f"), "name" : "x", "age" : 21 }
+```
+
+> 对于java端的操作可以参考：`com.murdock.books.mongodbguide.chapter4.CursorTest#limit`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行查询文档的关键逻辑如下：
+
+```java
+DBCollection collection = mongoTemplate.getCollection("foo");
+
+DBCursor dbObjects = collection.find().limit(2);
+dbObjects.forEach(System.out::println);
+```
+
+### `skip`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在查询返回的数据上，过滤掉前几个匹配的文档。比如：下面的查询，返回数据的结果会过滤掉前2个。
+
+```sh
+> db.foo.find().skip(2)
+{ "_id" : ObjectId("5de3abd5c28644d98389fadd"), "name" : "haha", "value" : [ 1, 2, 3 ] }
+{ "_id" : ObjectId("5de3abffc28644d98389fade"), "name" : "hehe", "value" : [ 3, 4, 5 ] }
+{ "_id" : ObjectId("5deccfaf65cd643b1a7f1b0f"), "name" : "m", "age" : 20, "map" : { "math" : 90, "physics" : 91, "english" : 92 } }
+{ "_id" : ObjectId("5decd04865cd643b1a7f1b10"), "name" : "n", "age" : 19, "map" : { "math" : 80, "physics" : 81, "english" : 82 } }
+{ "_id" : ObjectId("5dece6af65cd643b1a7f1b11"), "name" : "x", "age" : 27, "maps" : [ { "math" : 90, "physics" : 91, "english" : 92 }, { "math" : 80, "physics" : 81, "english" : 82 } ] }
+> 
+```
+
+> 对于java端的操作可以参考：`com.murdock.books.mongodbguide.chapter4.CursorTest#skip`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行查询文档的关键逻辑如下：
+
+```java
+DBCollection collection = mongoTemplate.getCollection("foo");
+
+DBCursor dbObjects = collection.find().skip(2);
+dbObjects.forEach(System.out::println);
+```
+
+> 使用`skip`过滤少量数据是可以的，但是如果用来过滤大量数据（比如：上万），就会出现性能瓶颈，因为它都是要查询出符合约束的数据，然后再加以过滤，这样的开销会随着过滤数据量级的提升而变得越来越差。
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过滤大量的数据，可以在功能侧考虑一些支持，比如：增加一个查询条件，时间；又或者将上一次查询的结果的id作为下一次查询的条件传入。
+
+### `sort`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在查询返回的数据上，可以通过`sort`来对集合的文档进行排序，其中`1`表示升序，`-1`表示降序。
+
+```sh
+> db.foo.find().sort({"name":1}).limit(3)
+{ "_id" : ObjectId("5de3abd5c28644d98389fadd"), "name" : "haha", "value" : [ 1, 2, 3 ] }
+{ "_id" : ObjectId("5de3abffc28644d98389fade"), "name" : "hehe", "value" : [ 3, 4, 5 ] }
+{ "_id" : ObjectId("5deccfaf65cd643b1a7f1b0f"), "name" : "m", "age" : 20, "map" : { "math" : 90, "physics" : 91, "english" : 92 } }
+```
+
+> 对于java端的操作可以参考：`com.murdock.books.mongodbguide.chapter4.CursorTest#sort`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用MongoDB的Java客户端，进行查询文档的关键逻辑如下：
+
+```java
+DBCollection collection = mongoTemplate.getCollection("foo");
+
+DBObject dbObject = new BasicDBObject();
+dbObject.put("name", 1);
+DBCursor dbObjects = collection.find().limit(3).sort(dbObject);
+dbObjects.forEach(System.out::println);
+```
+

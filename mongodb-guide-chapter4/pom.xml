@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mongodb-guide-chapter4</artifactId>
+    <name>mongodb-guide-chapter4</name>
     
     <dependencies>
         <dependency>
