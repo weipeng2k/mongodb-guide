@@ -65,6 +65,11 @@
                 <artifactId>mongodb-guide-chapter4</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>mongodb-guide-chapter5</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

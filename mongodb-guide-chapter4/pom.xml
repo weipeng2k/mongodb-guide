@@ -11,11 +11,15 @@
 
     <artifactId>mongodb-guide-chapter4</artifactId>
     <name>mongodb-guide-chapter4</name>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.murdock.books</groupId>
             <artifactId>mongodb-guide-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
