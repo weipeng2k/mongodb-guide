@@ -157,7 +157,7 @@ public class PoiTest {
         Criteria property = Criteria.where("propertyName").is("加油站");
         query.addCriteria(category).addCriteria(property);
         NearQuery nearQuery = NearQuery.near(30.2542303641, 120.029316088)
-                .maxDistance(7/111.0d)
+                .maxDistance(5/111.0d)
                 .distanceMultiplier(111)
                 .query(query);
 
@@ -165,6 +165,22 @@ public class PoiTest {
         System.out.println(poi);
         poi.forEach(System.out::println);
 
+    }
+
+    @Test
+    public void findNearSchool() {
+        Query query = new Query();
+        Criteria category = Criteria.where("categoryName").is("教育学校");
+        Criteria property = Criteria.where("propertyName").is("培训");
+        query.addCriteria(category).addCriteria(property);
+        NearQuery nearQuery = NearQuery.near(30.2542303641, 120.029316088)
+                .maxDistance(5/111.0d)
+                .distanceMultiplier(111)
+                .query(query);
+
+        GeoResults<Poi> poi = mongoTemplate.geoNear(nearQuery, Poi.class, "poi");
+        System.out.println(poi);
+        poi.forEach(System.out::println);
     }
 
     @Configuration

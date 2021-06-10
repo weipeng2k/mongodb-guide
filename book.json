@@ -1,23 +1,79 @@
 {
-  "plugins": ["-lunr", "-search", "search-plus", "github", "donate@^1.0.2", "word-count"],
+  "title": "title",
+  "author": "",
+  "plugins": [
+    "-lunr",
+    "-search",
+    "search-pro",
+    "-sharing",
+    "disqus",
+    "github-buttons",
+    "editlink",
+    "ga",
+    "-highlight",
+    "prism",
+    "bibtex-indexed-cite",
+    "anchor-navigation-ex",
+    "page-footer-ex",
+    "splitter",
+    "todo",
+    "copy-code-button",
+    "expandable-chapters-small",
+    "donate"
+  ],
   "pluginsConfig": {
-    "github": {
-      "url": "https://github.com/weipeng2k/mongodb-guide"
+    "search-pro": {
+      "cutWordLib": "nodejieba",
+      "defineWord": ["Gitbook Use"]
     },
-    "sharing": {
-      "weibo": true,
-      "facebook": true,
-      "twitter": true,
-      "google": false,
-      "instapaper": false,
-      "vk": false,
-      "all": ["facebook", "google", "twitter","weibo", "instapaper"]
+    "anchor-navigation-ex": {
+      "showLevel": false
+    },
+    "disqus": {
+      "shortName": "mongodb-guide"
+    },
+    "github-buttons": {
+      "buttons": [{
+        "user": "weipeng2k",
+        "repo": "mongodb-guide",
+        "type": "star",
+        "size": "small",
+        "count": true
+      }]
+    },
+    "editlink": {
+      "base": "https://github.com/weipeng2k/mongodb-guide/blob/master",
+      "label": "Edit",
+      "multilingual": false
+    },
+    "ga": {
+      "token": "UA-131910384-3"
+    },
+    "prism": {
+      "ignore": [
+        "mermaid",
+        "eval-js"
+      ],
+      "css": [
+        "prismjs/themes/prism-solarizedlight.css"
+      ]
+    },
+    "page-footer-ex": {
+      "copyright": "By [mongodb-guide](https://github.com/weipeng2k/mongodb-guide)，使用[知识共享 署名-相同方式共享 4.0协议](https://creativecommons.org/licenses/by-sa/4.0/)发布",
+      "markdown": true,
+      "update_label": "此页面修订于：",
+      "update_format": "YYYY-MM-DD HH:mm:ss"
+    },
+    "bibtex-indexed-cite": {
+      "path": "/"
     },
     "donate": {
-      "alipay": "https://github.com/weipeng2k/microservices-camp/raw/master/resource/alipay_qr.png",
+      "wechat": "https://weipeng2k.github.io/mongodb-guide/wechat_qr.JPG",
+      "alipay": "https://weipeng2k.github.io/mongodb-guide/alipay_qr.JPG",
       "title": "",
       "button": "赏",
-      "alipayText": "支付宝打赏"
+      "alipayText": "支付宝打赏",
+      "wechatText": "微信打赏"
     }
   }
 }
