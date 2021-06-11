@@ -17,7 +17,8 @@
     "splitter",
     "copy-code-button",
     "expandable-chapters-small",
-    "donate"
+    "donate",
+    "github"
   ],
   "pluginsConfig": {
     "search-pro": {
@@ -63,6 +64,9 @@
       "button": "赏",
       "alipayText": "支付宝打赏",
       "wechatText": "微信打赏"
+    },
+    "github": {
+      "url": "https://github.com/weipeng2k/mongodb-guide"
     }
   }
 }
