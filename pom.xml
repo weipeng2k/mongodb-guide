@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.murdock.books</groupId>
+    <artifactId>mongodb-guide</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>mongodb-guide</name>
+    <description>MongoDB Guide</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <spring-boot.version>1.5.18.RELEASE</spring-boot.version>
+        <fastjson.version>1.2.83</fastjson.version>
+    </properties>
+
+    <modules>
+        <module>mongodb-guide-chapter1</module>
+        <module>mongodb-guide-chapter2</module>
+        <module>mongodb-guide-common</module>
+        <module>mongodb-guide-chapter3</module>
+        <module>mongodb-guide-chapter4</module>
+        <module>mongodb-guide-chapter5</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- self -->
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>mongodb-guide-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>mongodb-guide-chapter1</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>mongodb-guide-chapter2</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>mongodb-guide-chapter3</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>mongodb-guide-chapter4</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>mongodb-guide-chapter5</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+                <version>2.3.2</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

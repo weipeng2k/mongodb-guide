@@ -1,0 +1,833 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>MongoDB-第三章-创建、更新和删除文档 · mongodb-guide</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="weipeng2k">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-pro/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-disqus/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-bibtex-indexed-cite/style.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchor-navigation-ex/style/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-page-footer-ex/style/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-expandable-chapters-small/expandable-chapters-small.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-donate/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="mongodb-guide-chapter4.html" />
+    
+    
+    <link rel="prev" href="mongodb-guide-chapter2.html" />
+    
+
+    <style>
+    @media only screen and (max-width: 640px) {
+        .book-header .hidden-mobile {
+            display: none;
+        }
+    }
+    </style>
+    <script>
+        window["gitbook-plugin-github-buttons"] = {"buttons":[{"user":"weipeng2k","repo":"mongodb-guide","type":"star","size":"small","count":true}]};
+    </script>
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    MongoDB-开篇简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="mongodb-guide-chapter1.html">
+            
+                <a href="mongodb-guide-chapter1.html">
+            
+                    
+                    MongoDB-第一章-简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="mongodb-guide-chapter2.html">
+            
+                <a href="mongodb-guide-chapter2.html">
+            
+                    
+                    MongoDB-第二章-入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4" data-path="mongodb-guide-chapter3.html">
+            
+                <a href="mongodb-guide-chapter3.html">
+            
+                    
+                    MongoDB-第三章-创建、更新和删除文档
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="mongodb-guide-chapter4.html">
+            
+                <a href="mongodb-guide-chapter4.html">
+            
+                    
+                    MongoDB-第四章-查询
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="mongodb-guide-chapter5.html">
+            
+                <a href="mongodb-guide-chapter5.html">
+            
+                    
+                    MongoDB-第五章-索引
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >MongoDB-第三章-创建、更新和删除文档</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-navicon"></i><ul><li><span class="title-icon "></span><a href="#&#x521B;&#x5EFA;&#x3001;&#x66F4;&#x65B0;&#x548C;&#x5220;&#x9664;&#x6587;&#x6863;"><b></b>&#x521B;&#x5EFA;&#x3001;&#x66F4;&#x65B0;&#x548C;&#x5220;&#x9664;&#x6587;&#x6863;</a></li><ul><li><span class="title-icon "></span><a href="#&#x63D2;&#x5165;&#x6587;&#x6863;"><b></b>&#x63D2;&#x5165;&#x6587;&#x6863;</a></li><ul><li><span class="title-icon "></span><a href="#&#x63D2;&#x5165;&#x7684;&#x539F;&#x7406;"><b></b>&#x63D2;&#x5165;&#x7684;&#x539F;&#x7406;</a></li></ul><li><span class="title-icon "></span><a href="#&#x5220;&#x9664;&#x6587;&#x6863;"><b></b>&#x5220;&#x9664;&#x6587;&#x6863;</a></li><li><span class="title-icon "></span><a href="#&#x66F4;&#x65B0;&#x6587;&#x6863;"><b></b>&#x66F4;&#x65B0;&#x6587;&#x6863;</a></li><ul><li><span class="title-icon "></span><a href="#set"><b></b>$SET</a></li><li><span class="title-icon "></span><a href="#inc"><b></b>$INC</a></li></ul><li><span class="title-icon "></span><a href="#&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x6570;&#x7EC4;&#x5C5E;&#x6027;"><b></b>&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x6570;&#x7EC4;&#x5C5E;&#x6027;</a></li><ul><li><span class="title-icon "></span><a href="#push"><b></b>$PUSH</a></li><li><span class="title-icon "></span><a href="#addtoset"><b></b>$ADDTOSET</a></li><li><span class="title-icon "></span><a href="#pop"><b></b>$POP</a></li></ul><li><span class="title-icon "></span><a href="#&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x9AD8;&#x9636;&#x7279;&#x6027;"><b></b>&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x9AD8;&#x9636;&#x7279;&#x6027;</a></li><ul><li><span class="title-icon "></span><a href="#upsert"><b></b>$UPSERT</a></li><li><span class="title-icon "></span><a href="#findandmodify"><b></b>FindAndModify</a></li></ul></ul></ul></div><a href="#&#x521B;&#x5EFA;&#x3001;&#x66F4;&#x65B0;&#x548C;&#x5220;&#x9664;&#x6587;&#x6863;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="&#x521B;&#x5EFA;&#x3001;&#x66F4;&#x65B0;&#x548C;&#x5220;&#x9664;&#x6587;&#x6863;"><a name="&#x521B;&#x5EFA;&#x3001;&#x66F4;&#x65B0;&#x548C;&#x5220;&#x9664;&#x6587;&#x6863;" class="anchor-navigation-ex-anchor" href="#&#x521B;&#x5EFA;&#x3001;&#x66F4;&#x65B0;&#x548C;&#x5220;&#x9664;&#x6587;&#x6863;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x521B;&#x5EFA;&#x3001;&#x66F4;&#x65B0;&#x548C;&#x5220;&#x9664;&#x6587;&#x6863;</h1>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;&#x4E00;&#x6B3E;&#x6570;&#x636E;&#x5E93;&#xFF0C;&#x6700;&#x4E3B;&#x8981;&#x7684;&#x5C31;&#x662F;&#x5BF9;&#x5176;&#xFF08;&#x5173;&#x7CFB;&#x6216;&#x96C6;&#x5408;&#xFF09;&#x8FDB;&#x884C;&#x589E;&#x5220;&#x6539;&#x67E5;&#xFF0C;&#x63A5;&#x4E0B;&#x6765;&#x5C31;&#x4ECB;&#x7ECD;&#x5982;&#x4F55;&#x5728;MongoDB&#x4E2D;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x7684;&#x65B0;&#x589E;&#x3001;&#x5220;&#x9664;&#x548C;&#x4FEE;&#x6539;&#xFF0C;&#x4EE5;&#x53CA;&#x8FD9;&#x4E9B;&#x64CD;&#x4F5C;&#x5728;MongoDB&#x4E2D;&#x7684;&#x7279;&#x70B9;&#x3002;</p>
+<h2 id="&#x63D2;&#x5165;&#x6587;&#x6863;"><a name="&#x63D2;&#x5165;&#x6587;&#x6863;" class="anchor-navigation-ex-anchor" href="#&#x63D2;&#x5165;&#x6587;&#x6863;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x63D2;&#x5165;&#x6587;&#x6863;</h2>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>insert</code>&#x547D;&#x4EE4;&#x53EF;&#x4EE5;&#x5411;&#x4E00;&#x4E2A;&#x96C6;&#x5408;&#x4E2D;&#x63D2;&#x5165;&#x65B0;&#x7684;&#x6587;&#x6863;&#xFF0C;&#x5BF9;&#x4E8E;&#x65B0;&#x589E;&#x7684;&#x6587;&#x6863;&#xFF0C;MongoDB&#x5BA2;&#x6237;&#x7AEF;&#x4F1A;&#x751F;&#x6210;&#x4E00;&#x4E2A;<code>_id</code>&#x3002;</p>
+<pre><code class="lang-sh">&gt; item = {&quot;name&quot;:&quot;murdock&quot;, &quot;age&quot;:18}
+&gt; db.foo.insert(item)
+&gt; show collections
+author_test_collection
+blog_test_collection
+foo
+mongo_task_instance_collection
+mongo_test_collecion
+mongo_test_collection
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x9996;&#x5148;&#x5B9A;&#x4E49;&#x4E86;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;<code>item</code>&#xFF0C;&#x968F;&#x540E;&#x901A;&#x8FC7;<code>insert</code>&#x547D;&#x4EE4;&#x5C06;&#x5176;&#x63D2;&#x5165;&#x5230;&#x96C6;&#x5408;<code>foo</code>&#x4E2D;&#x3002;</p>
+<blockquote>
+<p>&#x5982;&#x679C;&#x96C6;&#x5408;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;MongoDB&#x4F1A;&#x65B0;&#x5EFA;&#x7ACB;&#x4E00;&#x4E2A;&#x96C6;&#x5408;&#x3002;</p>
+<p>&#x901A;&#x8FC7;<code>show collections</code>&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x5F53;&#x524D;&#x6570;&#x636E;&#x5E93;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x96C6;&#x5408;&#x3002;</p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x5728;Java&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <strong>spring-data</strong> &#x6765;&#x8FDB;&#x884C;&#x6587;&#x6863;&#x7684;&#x63D2;&#x5165;&#x3002;</p>
+<pre><code class="lang-java">@Test
+public void insert() {
+    DBObject dbObject = new BasicDBObject();
+    dbObject.put(&quot;name&quot;, &quot;test&quot;);
+    dbObject.put(&quot;age&quot;, 18);
+    mongoTemplate.getCollection(&quot;foo&quot;).insert(dbObject);
+}
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x901A;&#x8FC7;&#x6784;&#x5EFA;<code>DBObject</code>&#xFF0C;&#x5411;&#x5176;&#x8BBE;&#x7F6E;&#x503C;&#xFF0C;&#x5E76;&#x5C06;&#x5176;&#x63D2;&#x5165;&#x5230;&#x6587;&#x6863;&#x4E2D;&#x3002;<code>DBObject</code>&#x7C7B;&#x4F3C;<code>Map</code>&#x3002;&#x548C;&#x5173;&#x7CFB;&#x6570;&#x636E;&#x5E93;&#x7C7B;&#x4F3C;&#xFF0C;&#x5BF9;&#x4E8E;&#x63D2;&#x5165;&#xFF0C;MongoDB&#x4E5F;&#x63D0;&#x4F9B;&#x4E86;&#x6279;&#x91CF;&#x65B0;&#x589E;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>insert</code>&#x65B9;&#x6CD5;&#x8FDB;&#x884C;&#x3002;</p>
+<pre><code class="lang-sh">&gt; items = [{&quot;name&quot;:&quot;murdock&quot;, &quot;age&quot;:19}, {&quot;name&quot;:&quot;john&quot;, &quot;age&quot;:20}]
+[
+    {
+        &quot;name&quot; : &quot;murdock&quot;,
+        &quot;age&quot; : 19
+    },
+    {
+        &quot;name&quot; : &quot;john&quot;,
+        &quot;age&quot; : 20
+    }
+]
+&gt; db.foo.insert(items)
+BulkWriteResult({
+    &quot;writeErrors&quot; : [ ],
+    &quot;writeConcernErrors&quot; : [ ],
+    &quot;nInserted&quot; : 2,
+    &quot;nUpserted&quot; : 0,
+    &quot;nMatched&quot; : 0,
+    &quot;nModified&quot; : 0,
+    &quot;nRemoved&quot; : 0,
+    &quot;upserted&quot; : [ ]
+})
+&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5cfcf12a6c1c3f471c95190c&quot;), &quot;name&quot; : &quot;murdock&quot;, &quot;age&quot; : 18 }
+{ &quot;_id&quot; : ObjectId(&quot;5cfcfba16c1c3f471c95190d&quot;), &quot;name&quot; : &quot;murdock&quot;, &quot;age&quot; : 19 }
+{ &quot;_id&quot; : ObjectId(&quot;5cfcfba16c1c3f471c95190e&quot;), &quot;name&quot; : &quot;john&quot;, &quot;age&quot; : 20 }
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5BF9;&#x4E8E;<code>insert</code>&#x65B9;&#x6CD5;&#xFF0C;&#x4F20;&#x5165;&#x4E86;&#x4E00;&#x4E2A;&#x6570;&#x7EC4;&#xFF0C;MongoDB&#x53EF;&#x4EE5;&#x6309;&#x7167;&#x6570;&#x7EC4;&#x5185;&#x5BB9;&#x8FDB;&#x884C;&#x63D2;&#x5165;&#xFF0C;&#x597D;&#x5904;&#x5728;&#x4E8E;&#x4E00;&#x6B21;&#x901A;&#x4FE1;&#x4EA4;&#x4E92;&#xFF0C;&#x53EF;&#x4EE5;&#x65B0;&#x589E;&#x591A;&#x4E2A;&#x6587;&#x6863;&#x3002;</p>
+<blockquote>
+<p>&#x548C;MongoDB&#x4E4B;&#x95F4;&#x7684;&#x6D88;&#x606F;&#x957F;&#x5EA6;&#x4E0D;&#x80FD;&#x8D85;&#x8FC7;16MB&#xFF0C;&#x6240;&#x4EE5;&#x5BF9;&#x4E8E;&#x6279;&#x91CF;&#x65B0;&#x589E;&#xFF0C;&#x4E5F;&#x9700;&#x8981;&#x505A;&#x597D;&#x5355;&#x6B21;&#x5BB9;&#x91CF;&#x7684;&#x4F30;&#x7B97;&#x3002;</p>
+<p>&#x5BF9;&#x4E8E;Java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.InsertTest</code></p>
+</blockquote>
+<h3 id="&#x63D2;&#x5165;&#x7684;&#x539F;&#x7406;"><a name="&#x63D2;&#x5165;&#x7684;&#x539F;&#x7406;" class="anchor-navigation-ex-anchor" href="#&#x63D2;&#x5165;&#x7684;&#x539F;&#x7406;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x63D2;&#x5165;&#x7684;&#x539F;&#x7406;</h3>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x5728;<code>InsertTest</code>&#x4E2D;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5982;&#x4E0B;&#x4EE3;&#x7801;&#x5BF9;<code>foo</code>&#x96C6;&#x5408;&#x4E2D;&#x8FDB;&#x884C;&#x63D2;&#x5165;&#x3002;</p>
+<pre><code class="lang-java">@Test
+public void insert() {
+    DBObject dbObject = new BasicDBObject();
+    dbObject.put(&quot;name&quot;, &quot;test&quot;);
+    dbObject.put(&quot;age&quot;, 18);
+    mongoTemplate.getCollection(&quot;foo&quot;).insert(dbObject);
+}
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x8FD9;&#x91CC;&#x4F7F;&#x7528;&#x7684;&#x662F;MongoDB&#x7684;Java&#x9A71;&#x52A8;&#xFF0C;&#x5F53;&#x8FDB;&#x884C;<code>insert</code>&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x5BF9;&#x5E94;&#x7684;&#x96C6;&#x5408;&#x65F6;&#xFF0C;MongoDB&#x5C31;&#x4F1A;&#x521B;&#x5EFA;&#x5BF9;&#x5E94;&#x7684;&#x96C6;&#x5408;&#x3002;&#x524D;&#x9762;&#x63D0;&#x5230;<code>_id</code>&#x5B57;&#x6BB5;&#xFF0C;&#x8FD9;&#x4E2A;&#x662F;&#x6BCF;&#x4E2A;&#x6587;&#x6863;&#x90FD;&#x4F1A;&#x5177;&#x5907;&#x7684;&#xFF0C;&#x800C;&#x4F8B;&#x5B50;&#x4E2D;&#x8FDB;&#x884C;&#x63D2;&#x5165;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;<code>_id</code>&#x5B57;&#x6BB5;&#x3002;MongoDB&#x4F1A;&#x68C0;&#x67E5;&#x63D2;&#x5165;&#x7684;&#x6587;&#x6863;&#xFF0C;&#x5F53;&#x6587;&#x6863;&#x4E2D;&#x6CA1;&#x6709;&#x5305;&#x542B;<code>_id</code>&#xFF0C;MongoDB&#x5BA2;&#x6237;&#x7AEF;&#x4F1A;&#x751F;&#x6210;&#x4E00;&#x4E2A;&#x3002;</p>
+<pre><code class="lang-java">public WriteResult insert(final List&lt;? extends DBObject&gt; documents, final InsertOptions insertOptions) {
+    WriteConcern writeConcern = insertOptions.getWriteConcern() != null ? insertOptions.getWriteConcern() : getWriteConcern();
+    Encoder&lt;DBObject&gt; encoder = toEncoder(insertOptions.getDbEncoder());
+
+    List&lt;InsertRequest&gt; insertRequestList = new ArrayList&lt;InsertRequest&gt;(documents.size());
+    for (DBObject cur : documents) {
+        if (cur.get(ID_FIELD_NAME) == null) {
+            cur.put(ID_FIELD_NAME, new ObjectId());
+        }
+        insertRequestList.add(new InsertRequest(new BsonDocumentWrapper&lt;DBObject&gt;(cur, encoder)));
+    }
+    return insert(insertRequestList, writeConcern, insertOptions.isContinueOnError(), insertOptions.getBypassDocumentValidation());
+}
+</code></pre>
+<blockquote>
+<p>&#x89C1;<code>com.mongodb.DBCollection#insert(java.util.List&lt;? extends com.mongodb.DBObject&gt;, com.mongodb.InsertOptions)</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#xFF0C;&#x6587;&#x6863;&#x4E2D;&#x6CA1;&#x6709;<code>_id</code>&#x5C5E;&#x6027;&#xFF0C;MongoDB&#x5BA2;&#x6237;&#x7AEF;&#x5C31;&#x4F1A;&#x751F;&#x6210;&#x4E00;&#x4E2A;&#x3002;&#x53EF;&#x4EE5;&#x770B;&#x4E00;&#x4E0B;<code>ObjectId</code>&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x4EE5;&#x53CA;&#x76F8;&#x5173;&#x7684;&#x5904;&#x7406;&#x903B;&#x8F91;&#x3002;</p>
+<pre><code class="lang-java">buffer.put(int3(timestamp));
+buffer.put(int2(timestamp));
+buffer.put(int1(timestamp));
+buffer.put(int0(timestamp));
+buffer.put(int2(machineIdentifier));
+buffer.put(int1(machineIdentifier));
+buffer.put(int0(machineIdentifier));
+buffer.put(short1(processIdentifier));
+buffer.put(short0(processIdentifier));
+buffer.put(int2(counter));
+buffer.put(int1(counter));
+buffer.put(int0(counter));
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x5BF9;&#x4E8E;&#x9ED8;&#x8BA4;&#x7684;<code>ObjectId</code>&#x7684;&#x751F;&#x6210;&#xFF0C;&#x4E00;&#x4E2A;12bytes&#x7684;&#x4E3B;&#x952E;&#xFF0C;&#x524D;4&#x4E2A;byte&#x662F;&#x65F6;&#x95F4;&#x6233;&#xFF0C;&#x540E;&#x4E09;&#x4E2A;&#x662F;&#x673A;&#x5668;&#x6807;&#x793A;&#xFF08;&#x4E00;&#x822C;&#x662F;&#x7F51;&#x5361;&#x76F8;&#x5173;&#x7684;&#x4FE1;&#x606F;&#xFF09;&#xFF0C;&#x63A5;&#x4E0B;&#x6765;&#x662F;&#x8FDB;&#x7A0B;&#x6807;&#x793A;&#xFF0C;&#x6700;&#x540E;&#x662F;&#x968F;&#x673A;&#x751F;&#x6210;&#x7684;3&#x4E2A;byte&#x3002;</p>
+<blockquote>
+<p>&#x7531;&#x4E8E;timestamp&#x7684;&#x5355;&#x4F4D;&#x662F;&#x79D2;&#xFF0C;&#x90A3;&#x4E48;&#x5728;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;&#x4E2D;&#x8FDB;&#x884C;&#x533A;&#x5206;&#x7684;&#x5C31;&#x662F;counter&#x90E8;&#x5206;&#x7684;3&#x4E2A;byte&#xFF0C;&#x800C;3&#x4E2A;byte&#x7684;&#x6570;&#x636E;&#x5185;&#x5BB9;&#x662F;&#xFF1A;16777216&#xFF0C;&#x4E00;&#x5343;&#x516D;&#x767E;&#x591A;&#x4E07;&#x3002;&#x53EF;&#x4EE5;&#x8BF4;&#x5728;&#x4E00;&#x79D2;&#x5185;&#xFF0C;&#x5BF9;&#x4E8E;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;&#x5185;&#x5BB9;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x8D85;&#x8FC7;&#x4E00;&#x5343;&#x516D;&#x767E;&#x4E07;&#x7684;TPS&#xFF0C;&#x5C31;&#x4E0D;&#x4F1A;&#x6709;&#x95EE;&#x9898;&#x3002;&#x4E8B;&#x5B9E;&#x4E0A;&#xFF0C;&#x73B0;&#x5B9E;&#x4E2D;&#x4E0D;&#x4F1A;&#x6709;&#x8FD9;&#x4E48;&#x9AD8;&#x7684;TPS&#xFF0C;&#x56E0;&#x4E3A;&#x5355;&#x8FDB;&#x7A0B;&#x8FD9;&#x4E48;&#x9AD8;&#x7684;TPS&#x5DF2;&#x7ECF;&#x8BA9;&#x7F51;&#x5361;&#x90FD;&#x88AB;&#x6253;&#x6EE1;&#x3002;</p>
+</blockquote>
+<h2 id="&#x5220;&#x9664;&#x6587;&#x6863;"><a name="&#x5220;&#x9664;&#x6587;&#x6863;" class="anchor-navigation-ex-anchor" href="#&#x5220;&#x9664;&#x6587;&#x6863;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5220;&#x9664;&#x6587;&#x6863;</h2>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>remove</code>&#x547D;&#x4EE4;&#xFF0C;&#x53EF;&#x4EE5;&#x5B8C;&#x6210;&#x5BF9;&#x96C6;&#x5408;&#x4E2D;&#x6587;&#x6863;&#x7684;&#x5220;&#x9664;&#x52A8;&#x4F5C;&#x3002;</p>
+<pre><code class="lang-sh">&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b52&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b53&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 19 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b54&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 20 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b55&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 21 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b56&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 22 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b57&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 23 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b58&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 24 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b59&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 25 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b5a&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 26 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b5b&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 27 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b5c&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 28 }
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b5d&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 29 }
+&gt; db.foo.remove({&quot;age&quot; : {&quot;$gte&quot;:19}})
+WriteResult({ &quot;nRemoved&quot; : 11 })
+&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d0638e1afe8102aeab43b52&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18 }
+</code></pre>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;Java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.RemoveTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x5220;&#x9664;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject ageGte = new BasicDBObject();
+ageGte.put(&quot;$gte&quot;, 19);
+
+DBObject removeQuery = new BasicDBObject();
+removeQuery.put(&quot;age&quot;, ageGte);
+
+WriteResult writeResult = mongoTemplate.getCollection(&quot;foo&quot;).remove(removeQuery);
+System.out.println(&quot;remove:&quot; + writeResult.getN());
+Assert.assertTrue(writeResult.getN() &gt;= 11);
+System.out.println(&quot;count:&quot; + mongoTemplate.getCollection(&quot;foo&quot;).count());
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x901A;&#x8FC7;<code>DBObject</code>&#x53EF;&#x4EE5;&#x6784;&#x9020;&#x51FA;<code>remove</code>&#x65B9;&#x6CD5;&#x9700;&#x8981;&#x7684;&#x53C2;&#x6570;&#xFF0C;&#x5176;&#x4E2D;<code>$gte</code>&#x662F;&#x4E00;&#x4E2A;&#x64CD;&#x4F5C;&#xFF0C;&#x4EE3;&#x8868;&#x5927;&#x4E8E;&#x7B49;&#x4E8E;&#x4E00;&#x4E2A;&#x503C;&#x3002;</p>
+<h2 id="&#x66F4;&#x65B0;&#x6587;&#x6863;"><a name="&#x66F4;&#x65B0;&#x6587;&#x6863;" class="anchor-navigation-ex-anchor" href="#&#x66F4;&#x65B0;&#x6587;&#x6863;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x66F4;&#x65B0;&#x6587;&#x6863;</h2>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>update</code>&#x547D;&#x4EE4;&#xFF0C;&#x53EF;&#x4EE5;&#x5B8C;&#x6210;&#x5BF9;&#x96C6;&#x5408;&#x4E2D;&#x6587;&#x6863;&#x7684;&#x4FEE;&#x6539;&#x52A8;&#x4F5C;&#x3002;</p>
+<pre><code class="lang-sh">&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d0dfb1becfa8c49ce3fb2b5&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18 }
+&gt; var f = {&quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18}
+&gt; f
+{ &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18 }
+&gt; f.level = &quot;high&quot;
+high
+&gt; f
+{ &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18, &quot;level&quot; : &quot;high&quot; }
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, f)
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d0dfb1becfa8c49ce3fb2b5&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18, &quot;level&quot; : &quot;high&quot; }
+</code></pre>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;Java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.UpdateTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject dbObject = new BasicDBObject();
+dbObject.put(&quot;name&quot;, &quot;test&quot;);
+dbObject.put(&quot;level&quot;, &quot;high&quot;);
+dbObject.put(&quot;age&quot;, 20);
+
+DBObject query = new BasicDBObject();
+query.put(&quot;name&quot;, &quot;test&quot;);
+
+WriteResult result = mongoTemplate.getCollection(&quot;foo&quot;).update(query, dbObject);
+System.out.println(result.getN() &gt;= 1);
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4EE5;&#x4E0A;&#x7684;&#x4FEE;&#x6539;&#x65B9;&#x5F0F;&#xFF0C;&#x5C5E;&#x4E8E;&#x8986;&#x76D6;&#x5F0F;&#x4FEE;&#x6539;&#xFF0C;&#x4F46;&#x662F;&#x6211;&#x4EEC;&#x5BF9;&#x4E8E;&#x6587;&#x6863;&#x7684;&#x4FEE;&#x6539;&#xFF0C;&#x5F80;&#x5F80;&#x662F;&#x96C6;&#x4E2D;&#x5728;&#x67D0;&#x4E2A;&#x5C5E;&#x6027;&#x3002;&#x9488;&#x5BF9;&#x90E8;&#x5206;&#x5C5E;&#x6027;&#x7684;&#x4FEE;&#x6539;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x65B9;&#x5F0F;&#x3002;</p>
+<h3 id="set"><a name="set" class="anchor-navigation-ex-anchor" href="#set"><i class="fa fa-link" aria-hidden="true"></i></a><code>$SET</code></h3>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x7531;&#x4E8E;&#x9ED8;&#x8BA4;&#x7684;Update&#x662F;&#x5168;&#x90E8;&#x8986;&#x76D6;&#xFF0C;&#x5F53;&#x9700;&#x8981;&#x4E3A;&#x6307;&#x5B9A;&#x7684;&#x6587;&#x6863;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x5B57;&#x6BB5;&#xFF0C;&#x5C31;&#x9700;&#x8981;&#x4F7F;&#x7528;<code>set</code>&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#x3002;</p>
+<pre><code class="lang-sh">&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d6bb09124b8e520faedc0aa&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 18,
+    &quot;sex&quot; : &quot;male&quot;
+}
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, {&quot;$set&quot;:{&quot;sex&quot;:&quot;female&quot;}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d6bb09124b8e520faedc0aa&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 18,
+    &quot;sex&quot; : &quot;female&quot;
+}
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x4F7F;&#x7528;<code>$set</code>&#xFF0C;&#x5C06;<code>sex</code>&#x5C5E;&#x6027;&#x4ECE;male&#x6539;&#x4E3A;&#x4E86;female&#x3002;</p>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;Java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.UpdateTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject update = new BasicDBObject();
+DBObject prop = new BasicDBObject();
+
+prop.put(&quot;sex&quot;, &quot;male&quot;);
+update.put(&quot;$set&quot;, prop);
+mongoTemplate.getCollection(&quot;foo&quot;).update(query, update);
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;<code>$set</code>&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#xFF0C;&#x5F53;&#x6587;&#x6863;&#x6CA1;&#x6709;&#x5BF9;&#x5E94;&#x7684;key&#x65F6;&#x4F1A;&#x6DFB;&#x52A0;&#xFF0C;&#x6709;&#x7684;&#x8BDD;&#xFF0C;&#x5219;&#x4FEE;&#x6539;&#x3002;</p>
+<h3 id="inc"><a name="inc" class="anchor-navigation-ex-anchor" href="#inc"><i class="fa fa-link" aria-hidden="true"></i></a><code>$INC</code></h3>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x9488;&#x5BF9;&#x6587;&#x6863;&#x4E2D;&#x7684;&#x6570;&#x5B57;&#x7C7B;&#x578B;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x589E;&#x52A0;<code>inc</code>&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#xFF0C;&#x5C06;&#x4E00;&#x4E2A;&#x6587;&#x6863;&#x4E2D;&#x7684;&#x6570;&#x5B57;&#x5C5E;&#x6027;&#x8FDB;&#x884C;&#x589E;&#x52A0;&#x6216;&#x8005;&#x51CF;&#x5C11;&#xFF08;&#x8D1F;&#x6570;&#xFF09;&#x3002;</p>
+<pre><code class="lang-sh">&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d0e0dceecfa8c49ce3fb2b7&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 18,
+    &quot;level&quot; : &quot;high&quot;
+}
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;} , {&quot;$inc&quot;:{&quot;age&quot;:1}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;} , {&quot;$inc&quot;:{&quot;age&quot;:1}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d0e0dceecfa8c49ce3fb2b7&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 20,
+    &quot;level&quot; : &quot;high&quot;
+}
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x4F7F;&#x7528;<code>$inc</code>&#xFF0C;&#x5C06;<code>age</code>&#x4ECE;18&#x53D8;&#x4E3A;20&#x3002;</p>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;Java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.UpdateTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject update = new BasicDBObject();
+DBObject prop = new BasicDBObject();
+prop.put(&quot;age&quot;, 1);
+update.put(&quot;$inc&quot;, prop);
+
+mongoTemplate.getCollection(&quot;foo&quot;).update(query, update);
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;<code>$inc</code>&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#xFF0C;&#x80FD;&#x591F;&#x4FDD;&#x8BC1;&#x5F53;&#x524D;&#x6587;&#x6863;&#x5BF9;&#x5E94;&#x7684;&#x5C5E;&#x6027;&#x66F4;&#x65B0;&#x662F;&#x539F;&#x5B50;&#x5316;&#x7684;&#x3002;</p>
+<h2 id="&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x6570;&#x7EC4;&#x5C5E;&#x6027;"><a name="&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x6570;&#x7EC4;&#x5C5E;&#x6027;" class="anchor-navigation-ex-anchor" href="#&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x6570;&#x7EC4;&#x5C5E;&#x6027;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x6570;&#x7EC4;&#x5C5E;&#x6027;</h2>
+<h3 id="push"><a name="push" class="anchor-navigation-ex-anchor" href="#push"><i class="fa fa-link" aria-hidden="true"></i></a><code>$PUSH</code></h3>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;MongoDB&#x652F;&#x6301;&#x7684;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x9664;&#x4E86;&#xFF1A;&#x6574;&#x578B;&#x3001;&#x6D6E;&#x70B9;&#x578B;&#x3001;&#x65E5;&#x671F;&#x4EE5;&#x53CA;&#x5B57;&#x7B26;&#x4E32;&#x8FD9;&#x79CD;&#x5355;&#x503C;&#x7C7B;&#x578B;&#x7684;&#x4E4B;&#x5916;&#xFF0C;&#x8FD8;&#x6709;&#x6570;&#x7EC4;&#x7C7B;&#x578B;&#x3002;&#x5982;&#x679C;&#x5BF9;&#x4E8E;&#x4E00;&#x4E2A;&#x6587;&#x6863;&#x4E2D;&#x7684;&#x6570;&#x7EC4;&#x5C5E;&#x6027;&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>push</code>&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#x3002;</p>
+<blockquote>
+<p>&#x8BE5;&#x64CD;&#x4F5C;&#x53EA;&#x80FD;&#x9488;&#x5BF9;&#x6570;&#x7EC4;&#x5C5E;&#x6027;</p>
+</blockquote>
+<pre><code class="lang-sh">&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, {&quot;$push&quot;:{&quot;hobbies&quot;:&quot;reading&quot;}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d6bb09124b8e520faedc0aa&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 18,
+    &quot;sex&quot; : &quot;female&quot;,
+    &quot;hobbies&quot; : [
+        &quot;reading&quot;
+    ]
+}
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, {&quot;$push&quot;:{&quot;hobbies&quot;:&quot;tvgaming&quot;}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d6bb09124b8e520faedc0aa&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 18,
+    &quot;sex&quot; : &quot;female&quot;,
+    &quot;hobbies&quot; : [
+        &quot;reading&quot;,
+        &quot;tvgaming&quot;
+    ]
+}
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>push</code>&#x5C06;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x6DFB;&#x52A0;&#x5230;&#x5BF9;&#x5E94;&#x7684;&#x6570;&#x7EC4;&#x7684;&#x5C3E;&#x90E8;&#x3002;</p>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;Java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.ArrayUpdateTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject update = new BasicDBObject();
+DBObject prop = new BasicDBObject();
+
+prop.put(&quot;hobbies&quot;, &quot;reading&quot;);
+update.put(&quot;$push&quot;, prop);
+mongoTemplate.getCollection(&quot;foo&quot;).update(query, update);
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;<code>$push</code>&#x8FDB;&#x884C;&#x6570;&#x7EC4;&#x5143;&#x7D20;&#x7684;&#x66F4;&#x65B0;&#xFF0C;&#x5F53;&#x6587;&#x6863;&#x6CA1;&#x6709;&#x5BF9;&#x5E94;&#x7684;&#x6570;&#x7EC4;key&#x65F6;&#x4F1A;&#x6DFB;&#x52A0;&#xFF0C;&#x5E76;&#x5C06;&#x5143;&#x7D20;&#x6DFB;&#x52A0;&#x5230;&#x6570;&#x7EC4;&#x7684;&#x5C3E;&#x90E8;&#x3002;</p>
+<h3 id="addtoset"><a name="addtoset" class="anchor-navigation-ex-anchor" href="#addtoset"><i class="fa fa-link" aria-hidden="true"></i></a><code>$ADDTOSET</code></h3>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;<code>push</code>&#x547D;&#x4EE4;&#x53EF;&#x4EE5;&#x5411;&#x4E00;&#x4E2A;&#x6587;&#x6863;&#x4E2D;&#x7684;&#x6570;&#x7EC4;&#x5C5E;&#x6027;&#x91CC;&#x6DFB;&#x52A0;&#x5185;&#x5BB9;&#xFF0C;&#x4F46;&#x662F;&#x5982;&#x679C;&#x8BE5;&#x5185;&#x5BB9;&#x5DF2;&#x7ECF;&#x5728;&#x6570;&#x7EC4;&#x4E2D;&#x51FA;&#x73B0;&#xFF0C;&#x800C;&#x672C;&#x6B21;&#x6DFB;&#x52A0;&#x662F;&#x5F53;&#x5143;&#x7D20;&#x5728;&#x6570;&#x7EC4;&#x4E2D;&#x4E0D;&#x5B58;&#x5728;&#x65F6;&#x624D;&#x751F;&#x6548;&#x65F6;&#xFF0C;&#x5C31;&#x9700;&#x8981;&#x4F7F;&#x7528;<code>addToSet</code>&#x3002;</p>
+<pre><code class="lang-sh">&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, {&quot;$addToSet&quot;:{&quot;hobbies&quot;:&quot;football&quot;}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d6bc02d24b8e52357933ed0&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 18,
+    &quot;hobbies&quot; : [
+        &quot;reading&quot;,
+        &quot;tvgaming&quot;,
+        &quot;football&quot;
+    ]
+}
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, {&quot;$addToSet&quot;:{&quot;hobbies&quot;:&quot;football&quot;}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 0 })
+&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d6bc02d24b8e52357933ed0&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 18,
+    &quot;hobbies&quot; : [
+        &quot;reading&quot;,
+        &quot;tvgaming&quot;,
+        &quot;football&quot;
+    ]
+}
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>addToSet</code>&#x5C06;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x4EE5;&#x96C6;&#x5408;Set&#x7684;&#x89C6;&#x89D2;&#x6DFB;&#x52A0;&#x5165;&#x4E00;&#x4E2A;&#x6570;&#x7EC4;&#xFF0C;&#x5F53;&#x6570;&#x7EC4;&#x4E2D;&#x5B58;&#x5728;&#x8BE5;&#x5143;&#x7D20;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4E0D;&#x4F1A;&#x6DFB;&#x52A0;&#x3002;</p>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;Java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.ArrayUpdateTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject update = new BasicDBObject();
+DBObject prop = new BasicDBObject();
+
+prop.put(&quot;hobbies&quot;, &quot;reading&quot;);
+update.put(&quot;$addToSet&quot;, prop);
+mongoTemplate.getCollection(&quot;foo&quot;).update(query, update);
+</code></pre>
+<h3 id="pop"><a name="pop" class="anchor-navigation-ex-anchor" href="#pop"><i class="fa fa-link" aria-hidden="true"></i></a><code>$POP</code></h3>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;<code>pop</code>&#x547D;&#x4EE4;&#x53EF;&#x4EE5;&#x5C06;&#x4E00;&#x4E2A;&#x6587;&#x6863;&#x4E2D;&#x7684;&#x6570;&#x7EC4;&#x5C5E;&#x6027;&#x91CC;&#x79FB;&#x51FA;&#x5143;&#x7D20;&#xFF0C;&#x5C31;&#x597D;&#x6BD4;&#x6808;&#x4E00;&#x6837;&#xFF0C;&#x8C03;&#x7528;<code>pop</code>&#x5C31;&#x4F1A;&#x5C06;&#x6808;&#x9876;&#x5143;&#x7D20;&#x79FB;&#x51FA;&#x3002;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>{&quot;$pop&quot;:{key:-1}}</code>&#x4ECE;&#x5C3E;&#x90E8;&#x79FB;&#x51FA;&#x5143;&#x7D20;&#x3002;</p>
+<pre><code class="lang-sh">&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d6bc02d24b8e52357933ed0&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18, &quot;hobbies&quot; : [ &quot;reading&quot;, &quot;tvgaming&quot;, &quot;football&quot;, &quot;tvgaming&quot;, &quot;basketball&quot; ] }
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, {&quot;$pop&quot;:{&quot;hobbies&quot;:-1}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d6bc02d24b8e52357933ed0&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18, &quot;hobbies&quot; : [ &quot;tvgaming&quot;, &quot;football&quot;, &quot;tvgaming&quot;, &quot;basketball&quot; ] }
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, {&quot;$pop&quot;:{&quot;hobbies&quot;:1}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d6bc02d24b8e52357933ed0&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18, &quot;hobbies&quot; : [ &quot;tvgaming&quot;, &quot;football&quot;, &quot;tvgaming&quot; ] }
+&gt; db.foo.update({&quot;name&quot;:&quot;test&quot;}, {&quot;$pop&quot;:{&quot;hobbies&quot;:-1}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d6bc02d24b8e52357933ed0&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 18, &quot;hobbies&quot; : [ &quot;football&quot;, &quot;tvgaming&quot; ] }
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>pop</code>&#x5C06;&#x4E00;&#x4E2A;&#x6570;&#x7EC4;&#x4E2D;&#x7684;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x79FB;&#x9664;&#x3002;</p>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;Java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.ArrayUpdateTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject pop = new BasicDBObject();
+DBObject popKey = new BasicDBObject();
+popKey.put(&quot;hobbies&quot;, -1);
+pop.put(&quot;$pop&quot;, popKey);
+mongoTemplate.getCollection(&quot;foo&quot;).update(query, pop);
+</code></pre>
+<blockquote>
+<p>&#x4E5F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;<code>pull</code>&#x547D;&#x540D;&#xFF0C;&#x6307;&#x5B9A;&#x7684;&#x79FB;&#x51FA;&#x67D0;&#x4E2A;&#x6570;&#x7EC4;&#x4E2D;&#x7684;&#x5143;&#x7D20;&#x3002;</p>
+</blockquote>
+<h2 id="&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x9AD8;&#x9636;&#x7279;&#x6027;"><a name="&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x9AD8;&#x9636;&#x7279;&#x6027;" class="anchor-navigation-ex-anchor" href="#&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x9AD8;&#x9636;&#x7279;&#x6027;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x66F4;&#x65B0;&#x6587;&#x6863;&#xFF0C;&#x9AD8;&#x9636;&#x7279;&#x6027;</h2>
+<h3 id="upsert"><a name="upsert" class="anchor-navigation-ex-anchor" href="#upsert"><i class="fa fa-link" aria-hidden="true"></i></a><code>$UPSERT</code></h3>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x5728;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x63D2;&#x5165;&#x65F6;&#xFF0C;&#x7ECF;&#x5E38;&#x4F1A;&#x9047;&#x5230;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x5C31;&#x662F;&#x5982;&#x679C;&#x4E3B;&#x952E;&#x5B58;&#x5728;&#x5219;&#x83B7;&#x53D6;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x5426;&#x5219;&#x63D2;&#x5165;&#xFF0C;&#x6BCF;&#x5F53;&#x8FD9;&#x65F6;&#x5019;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x8C28;&#x614E;&#x7684;&#x5904;&#x7406;&#xFF0C;&#x9700;&#x8981;&#x589E;&#x52A0;&#x4E3B;&#x952E;&#x7684;&#x7EA6;&#x675F;&#xFF0C;&#x5904;&#x7406;&#x56DE;&#x6EDA;&#x7684;&#x4E8B;&#x52A1;&#x3002;MongoDB&#x63D0;&#x4F9B;&#x4E86;<code>upsert</code>&#x547D;&#x4EE4;&#x7528;&#x6765;&#x5B8C;&#x6210;&#x8FD9;&#x4E2A;&#x5DE5;&#x4F5C;&#xFF0C;&#x4E14;&#x8BE5;&#x547D;&#x4EE4;&#x662F;&#x539F;&#x5B50;&#x6027;&#x7684;&#x3002;</p>
+<pre><code class="lang-sh">&gt; db.foo.update({&quot;name&quot;: &quot;test&quot;}, {&quot;$inc&quot;: {&quot;age&quot;: 1}}, true)
+WriteResult({
+    &quot;nMatched&quot; : 0,
+    &quot;nUpserted&quot; : 1,
+    &quot;nModified&quot; : 0,
+    &quot;_id&quot; : ObjectId(&quot;5d9a89e540eabd2b62ced5e9&quot;)
+})
+&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d9a89e540eabd2b62ced5e9&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 1 }
+&gt; db.foo.update({&quot;name&quot;: &quot;test&quot;}, {&quot;$inc&quot;: {&quot;age&quot;: 1}}, true)
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.foo.find()
+{ &quot;_id&quot; : ObjectId(&quot;5d9a89e540eabd2b62ced5e9&quot;), &quot;name&quot; : &quot;test&quot;, &quot;age&quot; : 2 }
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x901A;&#x8FC7;&#x5728;<code>update</code>&#x7684;&#x7B2C;&#x4E09;&#x4E2A;&#x53C2;&#x6570;&#x4F20;&#x5165;<code>true</code>&#xFF0C;&#x53EF;&#x4EE5;&#x5C06;&#x4E00;&#x4E2A;&#x4FEE;&#x6539;&#x7684;&#x547D;&#x4EE4;&#x53D8;&#x6210;&#x4E00;&#x4E2A;<code>upsert</code>&#x547D;&#x4EE4;&#x3002;</p>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.AdvancedUpdateTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject query = new BasicDBObject();
+query.put(&quot;name&quot;, &quot;test&quot;);
+
+DBObject update = new BasicDBObject();
+DBObject age = new BasicDBObject();
+age.put(&quot;age&quot;, 1);
+update.put(&quot;$inc&quot;, age);
+
+WriteResult update1 = collection.update(query, update, true, false);
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x5982;&#x679C;&#x591A;&#x6B21;&#x901A;&#x8FC7;<code>update</code>&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x7B2C;&#x4E00;&#x6B21;&#x66F4;&#x65B0;&#x662F;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x7684;&#x63D2;&#x5165;&#xFF0C;&#x800C;&#x540E;&#x7EED;&#x7684;&#x66F4;&#x65B0;&#x90FD;&#x662F;&#x9488;&#x5BF9;&#x8BE5;&#x6587;&#x6863;&#x7684;&#x66F4;&#x65B0;&#x3002;</p>
+<h3 id="findandmodify"><a name="findandmodify" class="anchor-navigation-ex-anchor" href="#findandmodify"><i class="fa fa-link" aria-hidden="true"></i></a><code>FindAndModify</code></h3>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x5F53;&#x6211;&#x4EEC;&#x9047;&#x5230;&#x5E76;&#x53D1;&#x66F4;&#x65B0;&#x4E00;&#x884C;&#x6570;&#x636E;&#x65F6;&#xFF0C;&#x5728;&#x4F7F;&#x7528;&#x5173;&#x7CFB;&#x6570;&#x636E;&#x5E93;&#x65F6;&#xFF0C;&#x7ECF;&#x5E38;&#x4F7F;&#x7528;&#x4E50;&#x89C2;&#x9501;&#x8FDB;&#x884C;&#x63A7;&#x5236;&#x3002;&#x6BD4;&#x5982;&#xFF1A;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x5B57;&#x6BB5;<code>version</code>&#xFF0C;&#x5F53;&#x66F4;&#x65B0;&#x65F6;&#xFF0C;&#x9700;&#x8981;&#x4F20;&#x5165;&#x67E5;&#x8BE2;&#x51FA;&#x7684;&#x6700;&#x65B0;<code>version</code>&#xFF0C;&#x4E5F;&#x53EA;&#x6709;<code>version</code>&#x548C;&#x5BF9;&#x5E94;&#x884C;&#x8BB0;&#x5F55;&#x4E2D;&#x7684;<code>version</code>&#x4E00;&#x81F4;&#x65F6;&#xFF0C;&#x65B9;&#x53EF;&#x66F4;&#x65B0;&#x3002;&#x8FD9;&#x6837;&#x662F;&#x53EF;&#x4EE5;&#x5B8C;&#x6210;&#x5BF9;&#x4E8E;&#x4E00;&#x884C;&#x7684;&#x5E76;&#x53D1;&#x66F4;&#x65B0;&#xFF0C;&#x95EE;&#x9898;&#x5C31;&#x662F;&#x9700;&#x8981;&#x5C06;&#x8FD9;&#x4E2A;<code>version</code>&#x5B9A;&#x4E49;&#x5728;&#x6BCF;&#x4E2A;&#x9700;&#x8981;&#x5E76;&#x53D1;&#x66F4;&#x65B0;&#x7684;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x4E2D;&#x3002;</p>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x8FD9;&#x79CD;&#x5355;&#x884C;&#xFF08;&#x6587;&#x6863;&#xFF09;&#x7684;&#x5E76;&#x53D1;&#x66F4;&#x65B0;&#xFF0C;&#x662F;&#x4E00;&#x79CD;&#x5E38;&#x89C1;&#x7684;&#x66F4;&#x65B0;&#x573A;&#x666F;&#xFF0C;MongoDB&#x5BF9;&#x4E8E;&#x8FD9;&#x79CD;&#x66F4;&#x65B0;&#x573A;&#x666F;&#x63D0;&#x4F9B;&#x4E86;&#x66F4;&#x52A0;&#x7B80;&#x5355;&#x7684;&#x4F7F;&#x7528;&#x65B9;&#x5F0F;&#x3002;</p>
+<pre><code class="lang-sh">&gt; db.runCommand({
+... &quot;findAndModify&quot;:&quot;foo&quot;,
+... &quot;query&quot;:{&quot;name&quot;: &quot;test&quot;},
+... &quot;update&quot;:{&quot;$set&quot;:{&quot;age&quot;:30}}
+... })
+{
+    &quot;lastErrorObject&quot; : {
+        &quot;n&quot; : 1,
+        &quot;updatedExisting&quot; : true
+    },
+    &quot;value&quot; : {
+        &quot;_id&quot; : ObjectId(&quot;5d9aa2d640eabd2b62ced639&quot;),
+        &quot;name&quot; : &quot;test&quot;,
+        &quot;age&quot; : 5
+    },
+    &quot;ok&quot; : 1
+}
+&gt; db.foo.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;5d9aa2d640eabd2b62ced639&quot;),
+    &quot;name&quot; : &quot;test&quot;,
+    &quot;age&quot; : 30
+}
+</code></pre>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;<code>findAndModify</code>&#x547D;&#x4EE4;&#x9700;&#x8981;&#x8F93;&#x5165;&#x96C6;&#x5408;&#x7B49;&#x76F8;&#x5173;&#x7684;&#x66F4;&#x65B0;&#x4FE1;&#x606F;&#xFF0C;&#x5BF9;&#x5E94;&#x7684;&#x952E;&#x548C;&#x7C7B;&#x578B;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x952E;</th>
+<th>&#x7C7B;&#x578B;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>findAndModify</td>
+<td>&#x5B57;&#x7B26;&#x4E32;</td>
+<td>&#x5BF9;&#x5E94;&#x7684;&#x96C6;&#x5408;&#x540D;</td>
+</tr>
+<tr>
+<td>query</td>
+<td>&#x6587;&#x6863;</td>
+<td>&#x67E5;&#x8BE2;&#x7684;&#x6587;&#x6863;&#xFF0C;&#x7528;&#x6765;&#x68C0;&#x7D22;</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>&#x6587;&#x6863;</td>
+<td>&#x6392;&#x5E8F;&#x7684;&#x6587;&#x6863;&#xFF0C;&#x7528;&#x6765;&#x5BF9;&#x68C0;&#x7D22;&#x7684;&#x7ED3;&#x679C;&#x8FDB;&#x884C;&#x6392;&#x5E8F;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>&#x6587;&#x6863;</td>
+<td>&#x4FEE;&#x6539;&#x7684;&#x6587;&#x6863;&#xFF0C;&#x7528;&#x6765;&#x4FEE;&#x6539;</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>&#x5E03;&#x5C14;</td>
+<td>&#x662F;&#x5426;&#x5220;&#x9664;&#x6587;&#x6863;</td>
+</tr>
+<tr>
+<td>new</td>
+<td>&#x5E03;&#x5C14;</td>
+<td>&#x662F;&#x5426;&#x8FD4;&#x56DE;&#x66F4;&#x65B0;&#x540E;&#x7684;&#x6587;&#x6863;</td>
+</tr>
+</tbody>
+</table>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;<code>findAndModify</code>&#x53EA;&#x80FD;&#x5BF9;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x7684;&#x6587;&#x6863;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#xFF0C;&#x800C;&#x4E14;&#x4E00;&#x6B21;&#x53EA;&#x80FD;&#x66F4;&#x65B0;&#x4E00;&#x884C;&#x3002;&#x76F8;&#x6BD4;&#x8F83;&#x800C;&#x8A00;<code>findAndModify</code>&#x7684;&#x8017;&#x65F6;&#x76F8;&#x5F53;&#x4E8E;&#x4E00;&#x6B21;&#x67E5;&#x8BE2;&#x3001;&#x4E00;&#x6B21;&#x66F4;&#x65B0;&#x548C;&#x6267;&#x884C;&#x4E00;&#x6B21;<code>getLastError</code>&#x6240;&#x9700;&#x7684;&#x65F6;&#x95F4;&#x3002;</p>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;java&#x7AEF;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<code>com.murdock.books.mongodbguide.chapter3.AdvancedUpdateTest</code></p>
+</blockquote>
+<p>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#x4F7F;&#x7528;MongoDB&#x7684;Java&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#x6587;&#x6863;&#x7684;&#x5173;&#x952E;&#x903B;&#x8F91;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java">DBObject query = new BasicDBObject();
+query.put(&quot;name&quot;, &quot;test&quot;);
+
+DBObject update = new BasicDBObject();
+DBObject age = new BasicDBObject();
+age.put(&quot;age&quot;, 20);
+update.put(&quot;$set&quot;, age);
+
+DBObject andModify = collection.findAndModify(query, null, null, false, update, true, false);
+</code></pre>
+<footer class="page-footer-ex"> <span class="page-footer-ex-copyright"> By <a href="https://github.com/weipeng2k/mongodb-guide" target="_blank">mongodb-guide</a>&#xFF0C;&#x4F7F;&#x7528;<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">&#x77E5;&#x8BC6;&#x5171;&#x4EAB; &#x7F72;&#x540D;-&#x76F8;&#x540C;&#x65B9;&#x5F0F;&#x5171;&#x4EAB; 4.0&#x534F;&#x8BAE;</a>&#x53D1;&#x5E03; </span> &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0; <span class="page-footer-ex-footer-update"> &#x6B64;&#x9875;&#x9762;&#x4FEE;&#x8BA2;&#x4E8E;&#xFF1A; 2022-06-17 02:07:42 </span> </footer>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="mongodb-guide-chapter2.html" class="navigation navigation-prev " aria-label="Previous page: MongoDB-第二章-入门">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="mongodb-guide-chapter4.html" class="navigation navigation-next " aria-label="Next page: MongoDB-第四章-查询">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"MongoDB-第三章-创建、更新和删除文档","level":"1.4","depth":1,"next":{"title":"MongoDB-第四章-查询","level":"1.5","depth":1,"path":"book/mongodb-guide-chapter4.md","ref":"book/mongodb-guide-chapter4.md","articles":[]},"previous":{"title":"MongoDB-第二章-入门","level":"1.3","depth":1,"path":"book/mongodb-guide-chapter2.md","ref":"book/mongodb-guide-chapter2.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-lunr","-search","search-pro","-sharing","disqus","github-buttons","editlink","ga","-highlight","bibtex-indexed-cite","anchor-navigation-ex","page-footer-ex","splitter","copy-code-button","expandable-chapters-small","donate","github"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"disqus":{"useIdentifier":false,"shortName":"mongodb-guide"},"github":{"url":"https://github.com/weipeng2k/mongodb-guide"},"editlink":{"label":"Edit","multilingual":false,"base":"https://github.com/weipeng2k/mongodb-guide/blob/master"},"page-footer-ex":{"copyright":"By [mongodb-guide](https://github.com/weipeng2k/mongodb-guide)，使用[知识共享 署名-相同方式共享 4.0协议](https://creativecommons.org/licenses/by-sa/4.0/)发布","markdown":true,"update_format":"YYYY-MM-DD HH:mm:ss","update_label":"此页面修订于："},"splitter":{},"search-pro":{"cutWordLib":"nodejieba","defineWord":["Gitbook Use"]},"donate":{"alipay":"https://weipeng2k.github.io/mongodb-guide/alipay_qr.JPG","alipayText":"支付宝打赏","button":"赏","title":"","wechat":"https://weipeng2k.github.io/mongodb-guide/wechat_qr.JPG","wechatText":"微信打赏"},"fontsettings":{"theme":"white","family":"sans","size":2},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"floatIcon":"fa fa-navicon","level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":false},"bibtex-indexed-cite":{"path":"/"},"github-buttons":{"buttons":[{"user":"weipeng2k","repo":"mongodb-guide","type":"star","size":"small","count":true}]},"expandable-chapters-small":{},"copy-code-button":{},"ga":{"configuration":"auto","token":"UA-131910384-3"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"weipeng2k","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"bibCount":0,"variables":{},"title":"mongodb-guide","bib":[],"gitbook":"*"},"file":{"path":"book/mongodb-guide-chapter3.md","mtime":"2022-06-17T02:07:42.824Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-06-17T02:08:48.079Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-pro/search.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.16.1/URI.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-disqus/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github-buttons/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-editlink/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-expandable-chapters-small/expandable-chapters-small.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-donate/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
